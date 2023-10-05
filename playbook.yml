@@ -1,0 +1,22 @@
+---
+- hosts: all
+  gather_facts: false
+  connection: local
+  roles:
+    - common
+  tasks:
+    - name: List all known variables and facts
+      debug: 
+        var: hostvars[inventory_hostname]
+      tags: [ never, debug ]
+    
+    - name: Include role to create vlan in leaf switches
+      include_role:
+        name: vlan
+      when: '"leaf" in group_names'
+    
+    - name: Combine configuration of devices
+      ansible.builtin.assemble:
+        src: "{{ playbook_dir }}/rendered_config/{{ inventory_hostname }}/partials"
+        dest: "{{ playbook_dir }}/rendered_config/{{ inventory_hostname }}.cfg"
+        delimiter: "!!!!"

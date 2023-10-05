@@ -1,0 +1,6 @@
+---
+# tasks file for vlan
+- name: Render vlan configuration for leaf switch
+  ansible.builtin.template:
+    src: vlan.j2
+    dest: "{{ playbook_dir }}/rendered_config/{{ inventory_hostname }}/partials/{{ inventory_hostname }}-vlan.cfg"

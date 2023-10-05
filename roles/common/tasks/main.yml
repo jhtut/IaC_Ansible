@@ -1,0 +1,9 @@
+---
+# tasks file for common
+- name: Ensure directory exists per device
+  file: path={{ playbook_dir }}/rendered_config/{{ inventory_hostname }}/partials state=directory
+
+- name: Render common configuration for fabric
+  ansible.builtin.template:
+    src: common.j2
+    dest: "{{ playbook_dir }}/rendered_config/{{ inventory_hostname }}/partials/{{ inventory_hostname }}-common.cfg"
